@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_quality_check_form" model="ir.ui.view">
+        <field name="name">view_quality_check_form</field>
+        <field name="model">quality.apex</field>
+        <field name="arch" type="xml">
+            <form>
+                <field invisible="1" name="is_locked"/>
+                <sheet>
+                    <field class="oe_right" decoration-info="state == 'checking'" decoration-success="state == 'done'"
+                           name="state" widget="badge"/>
+                    <h1>
+                        <field name="name"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="qc_name"/>
+                            <field name="product_id"/>
+                            <field name="vendor_id"/>
+                            <field name="po_num"/>
+                            <field name="trans_ref"/>
+                        </group>
+                        <group>
+                            <field name="created_date"/>
+                            <field name="approved_date"/>
+                            <field name="pass_ref"/>
+                            <field name="fail_ref"/>
+                            <field name="is_locked" invisible="True"/>
+                        </group>
+                    </group>
+                    <!--                    <group>-->
+                    <!--                        <label for="quantity"/>-->
+                    <div class="row">
+                        <div class="col-5 d-flex align-items-center">
+                            <div class="d-inline">
+                                <h1>
+                                    <group>
+                                        <field name="quantity"/>
+                                    </group>
+                                </h1>
+                            </div>
+                            <div class="d-inline ml-2">
+                                <field name="product_uom_id"/>
+                            </div>
+                        </div>
+                    </div>
+                    <!--                    </group>-->
+                    <!--                    <group>-->
+                    <div class="row">
+                        <div class="col-6">
+                            <h2>
+                                <group>
+                                    <field name="passed" readonly="is_locked == True"/>
+                                </group>
+                            </h2>
+                        </div>
+                        <div class="col-6">
+                            <h2>
+                                <group>
+                                    <field name="failed" readonly="is_locked == True"/>
+                                </group>
+                            </h2>
+                        </div>
+                    </div>
+                    <!--                    </group>-->
+                    <div class="oe_right">
+                        <!--                    <div class="oe_right oe_inline-end oe_highlight">-->
+                        <button class="oe_highlight" invisible="is_locked == True" name="approve" string="Approve"
+                                type="object"/>
+                        <!--                    </div>-->
+                        <button invisible="is_locked == False" name="unlock" string="Unlock" type="object"/>
+                    </div>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="view_quality_check_tree" model="ir.ui.view">
+        <field name="name">view_quality_check_tree</field>
+        <field name="model">quality.apex</field>
+        <field name="arch" type="xml">
+            <tree default_order="created_date desc" multi_edit="1">
+                <field name="created_date"/>
+                <field name="product_id"/>
+                <field name="quantity"/>
+                <field name="product_uom_id" string="Unit"/>
+                <field name="passed"/>
+                <field name="failed"/>
+                <field name="po_num" optional="hide"/>
+                <field decoration-info="state == 'checking'" decoration-success="state == 'done'" name="state"
+                       widget="badge"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_quality_check_search" model="ir.ui.view">
+        <field name="name">view_quality_check_search</field>
+        <field name="model">quality.apex</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="product_id"/>
+                <field name="product_uom_id"/>
+                <field name="passed"/>
+                <field name="failed"/>
+                <field name="po_num"/>
+                <field name="state"/>
+                <filter domain="[('state', '=', 'checking')]" name="checking" string="TO DO"/>
+                <group>
+                    <filter context="{'group_by': 'po_num'}" name="po_num" string="PO Number"/>
+                    <filter context="{'group_by': 'product_id'}" name="product" string="Product"/>
+                    <filter context="{'group_by': 'state'}" name="state" string="State"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="action_quality" model="ir.actions.act_window">
+        <field name="name">Quality</field>
+        <field name="res_model">quality.apex</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_id" ref="view_quality_check_tree"/>
+        <field name="context">{'search_default_checking':1}</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a Credentials!
+            </p>
+        </field>
+    </record>
+    <menuitem id="quality_root_apex" name="Quality Apex" sequence="1" web_icon="quality,static/description/icon.png"/>
+    <menuitem action="action_quality" id="submenu_quality" name="quality" parent="quality_root_apex" sequence="1"/>
+
+    <!--    <menuitem id="quality_root" name="Quality Apex" sequence="1" web_icon="quality,static/description/icon.png">-->
+    <!--        <menuitem id="submenu_quality" action="action_quality" name="Apex Quality"/>-->
+    <!--    </menuitem>-->
+</odoo>

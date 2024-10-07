@@ -1,0 +1,20 @@
+{
+    'name': "Sale Order Delivery Report",
+    'summary': """  """,
+    'description': """  """,
+    'author': "Rck Techiees",
+    'website': "http://www.rcktechiees.com",
+    'category': 'Sales',
+    'version': '0.1',
+    'depends': ['base','sale_management','sale','report_xlsx'],
+    'data': [
+        # 'views/views.xml',
+        # 'views/product_template.xml',
+        # 'reports/manufacturer_report.xml',
+        # 'reports/internal_header_template.xml',
+        'report/report_ids.xml',
+        'security/ir.model.access.csv',
+        'wizard/sales_status_report_wizard.xml',
+        'views/menus.xml',
+    ],
+}

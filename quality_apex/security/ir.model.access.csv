@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_quality_user,access.quality.user,model_quality_apex,quality_apex.group_quality_users,1,0,1,0
+access_quality_checker,access.quality.checker,model_quality_apex,quality_apex.group_quality_checkers,1,1,0,0
+access_quality_admin,access.quality.admin,model_quality_apex,quality_apex.group_quality_admins,1,1,1,1
+

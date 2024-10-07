@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_order_kpis_tree_inherit_inherit" model="ir.ui.view">
+        <field name="name">purchase_order_tree_inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="zoho_book.purchase_request_order_tree_inherit_inherit"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="replace">
+                <field decoration-danger="state == 'complete_receive'" decoration-info="state == 'partial' or state == 'sent'" decoration-success="state == 'done'" decoration-warning="state == 'to approve' or state == 'purchase'" name="state" widget="badge"/>
+            </xpath></field>
+    </record>
+    <record id="purchase_order_form_inherit_in_quality" model="ir.ui.view">
+        <field name="name">purchase_order_form_inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_ref']" position="before">
+                <field invisible="0" name="no_of_quality_done_items"/>
+            </xpath></field>
+    </record>
+<!--    <record id="view_picking_form_inherit_inherit" model="ir.ui.view">-->
+<!--        <field name="name">Stock Picking</field>-->
+<!--        <field name="model">stock.picking</field>-->
+<!--        <field name="inherit_id" ref="zoho_book.view_picking_form_inherit"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//form/sheet/notebook/page/field[@name='move_ids_without_package']/tree/field[@name='uom_stock_qty']" position="before">-->
+<!--                <field name="change_uom_stock_qty" optional="hide"/>-->
+<!--            </xpath></field>-->
+<!--    </record>-->
+    <record id="view_tree_danger" model="ir.ui.view">
+        <field name="name">Stock Picking</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='location_id']" position="after">
+                <field groups="!stock.group_stock_multi_locations" invisible="1" name="location_id"/>
+            </xpath>
+            <xpath expr="//tree" position="attributes">
+                <attribute name="decoration-danger">
+                    location_id==21</attribute>
+            </xpath></field>
+    </record>
+    <record id="view_stock_return_picking_form_inherit" model="ir.ui.view">
+        <field name="name">view_stock_return_picking_form_inherit</field>
+        <field name="model">stock.return.picking</field>
+        <field name="inherit_id" ref="stock.view_stock_return_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='product_return_moves']" position="attributes">
+                <attribute name="options">
+                    {'no_open': True, 'no_edit': True}</attribute>
+                <attribute name="readonly">True</attribute>
+            </xpath></field>
+    </record>
+<!--    <record id="stock_view_picking_form_inherit" model="ir.ui.view">-->
+<!--        <field name="name">stock.view_picking_form_inherit</field>-->
+<!--        <field name="model">stock.picking</field>-->
+<!--        <field name="inherit_id" ref="stock.view_picking_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//button[@name='%(stock.act_stock_return_picking)d']" position="attributes">-->
+<!--                <attribute name="invisible">picking_type_id == 1</attribute>-->
+<!--            </xpath></field>-->
+<!--    </record>-->
+</odoo>

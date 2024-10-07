@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="product_reserved_stock_details_wizard" model="ir.ui.view">
+            <field name="name">product.reserved_stock_details.wizard</field>
+            <field name="model">product.reserved_stock_details</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <group>
+                            <field name="product_id" required="1"/>
+                        </group>
+                    </group>
+                    <footer>
+                        <button string="Submit" name="submit_product" class="btn btn-primary" type="object"/>
+                        <button string="Cancel" class="btn btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="product_reserved_stock_details" model="ir.actions.act_window">
+            <field name="name">Product Reserved Stock Details</field>
+            <field name="res_model">product.reserved_stock_details</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_product_reserved_stock_info" name="Reserved Product Information" parent="stock.menu_warehouse_report" sequence="100" action="product_reserved_stock_details"/>
+
+    </data>
+</odoo>

@@ -1,0 +1,12 @@
+<odoo>
+    <data>
+
+    <menuitem id="sale_status_report_menu"
+            name="Sales Status Report"
+            action="sales_status_report_act"
+            parent="sale.menu_sale_report"
+            sequence="2"/>
+
+     </data>
+
+</odoo>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="prd_stock_res">
+         <t t-call="web.html_container">
+            <div class="page pt-3 o_report_replenishment_page">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <t t-set="future_virtual_available" t-value="docs['virtual_available'] + docs['qty']['in'] - docs['qty']['out']"/>
+                            <div class="d-flex justify-content-between mb-4 mt-3">
+                                <div class="o_product_name" style="display: flex;text-align: center;justify-content: center;align-items: center;">
+                                    <h3>
+                                        <t t-foreach="docs['product_variants']" t-as="product_variant">
+                                            <a href="#" res-model="product.product" view-type="form" t-att-res-id="product_variant.id">
+                                                <t t-esc="product_variant.display_name"/>
+                                            </a>
+                                        </t>
+                                    </h3>
+                                    <h6 t-if="docs['product_templates'] and docs['product_variants'] and len(docs['product_templates']) != len(docs['product_variants'])">
+                                        <t t-foreach="docs['product_variants']" t-as="product_variant">
+                                            <a href="#" res-model="product.product" view-type="form" t-att-res-id="product_variant.id">
+                                                <t t-esc="'[%s]' % product_variant.product_template_attribute_value_ids._get_combination_name()"/>
+                                            </a>
+                                        </t>
+                                    </h6>
+                                </div>
+                                <div class="row">
+                                    <div class="mx-3 text-center">
+                                        <div class="h3">
+                                            <t t-esc="docs['quantity_on_hand']"/>
+                                            <t t-esc="docs['uom']" groups="uom.group_uom"/>
+                                        </div>
+                                        <div>On Hand</div>
+                                    </div>
+                                    <div name="pending_forecasted" t-attf-class="mx-3 text-center">
+                                        <div class="h3">
+                                            <t t-esc="docs['reserved_total']"/>
+                                        </div>
+                                        <div>Reserved</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <t t-if="docs['lines']">
+                                <table class="o_report_replenishment table table-bordered">
+                                    <thead>
+                                        <tr class="bg-light">
+                                            <td>Reserved From</td>
+                                            <td>Product</td>
+                                            <td class="text-right">Quantity</td>
+                                            <td>UoM</td>
+                                            <td>Reserved by</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr t-foreach="docs['lines']" t-as="line">
+                                            <td t-attf-class="#{line['is_late'] and 'o_grid_warning'}">
+                                                <a t-if="line['document_in']"
+                                                    t-attf-href="#" t-esc="line['document_in'].name"
+                                                    class="font-weight-bold" view-type="form"
+                                                    t-att-res-model="line['document_in']._name"
+                                                    t-att-res-id="line['document_in'].id"/>
+                                                <t t-elif="line['reservation']">
+                                                    Reserved from stock
+                                                </t>
+                                            </td>
+                                            <td t-esc="line['product']['display_name']"/>
+                                            <td class="text-right"><t t-if="not line['replenishment_filled']">- </t><t t-esc="line['quantity']"/></td>
+                                            <td t-esc="line['uom_id'].name"/>
+                                            <td t-attf-class="#{not line['replenishment_filled'] and 'o_grid_warning'}">
+                                                <a t-if="line['document_out']"
+                                                    t-attf-href="#" t-esc="line['document_out'].name"
+                                                    class="font-weight-bold" view-type="form"
+                                                    t-att-res-model="line['document_out']._name"
+                                                    t-att-res-id="line['document_out'].id"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </t>
+                            <t t-else="">
+                                <div class="text-center" style="font-size: 30px;">
+                                    No reserved information available.
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Reports -->
+    <record id="stock_reserved_prd_report" model="ir.actions.report">
+        <field name="name">Reserved Stock Report</field>
+        <field name="model">product.product</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">product_reserved_stock_info.prd_stock_res</field>
+    </record>
+
+</odoo>

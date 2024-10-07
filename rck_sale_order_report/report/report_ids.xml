@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+   <data>
+
+      <report
+         id="rck_status_rpt"
+         model="sales_status.report"
+         string="Sales Status Report"
+         report_type="xlsx"
+         name="rck_sale_order_report.status_rpt"
+         file="sales status report"
+         attachment_use="False"/>
+
+   </data>
+</odoo>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="stock_move_line_wizard_form" model="ir.ui.view">
+        <field name="name">Confirmation</field>
+        <field name="model">stock.move.line.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h3>
+                        Please Confirm The Qty And Conversion Value!
+                    </h3>
+                    <field name="picking" readonly="1"/>
+                    <notebook>
+                        <page name="stock_lines_page" string="Stock Lines">
+                            <field context="{'default_wizard_id': active_id}" name="stock_line_ids" options="{'no_create_edit': True}" widget="many2many_list">
+                                <tree>
+                                    <field name="product_id"/>
+                                    <field name="uom_line_value"/>
+                                    <field name="qty_done"/>
+                                </tree></field>
+                        </page>
+                    </notebook>
+                    <footer>
+                        <button class="oe_highlight" name="validate" string="Confirm" type="object"/>
+                        <button class="btn btn-default" special="cancel" string="Discard"/>
+                    </footer>
+                </sheet>
+            </form></field>
+    </record>
+    <!--    <record id="stock_picking_line_tree" model="ir.ui.view">-->
+    <!--        <field name="name">stock_picking_line_tree</field>-->
+    <!--        <field name="model">stock.picking</field>-->
+    <!--        <field name="priority" eval="33"/>-->
+    <!--        <field name="type">form</field>-->
+    <!--        <field name="inherit_id" ref="stock.view_picking_form"/>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <xpath expr="//header/button[@name='do_print_picking']" position="before">-->
+    <!--                <button name="validate" string="VALIDATE" type="object" class="oe_highlight"-->
+    <!--                        attrs="{'invisible': [('state', 'in', ('draft','done','cancel'))]}"/>-->
+    <!--            </xpath>-->
+    <!--            <xpath expr="//field[@name='move_ids_without_package']/tree" position="attributes">-->
+    <!--                <attribute name="editable">top</attribute>-->
+    <!--            </xpath>-->
+    <!--</field>-->
+    <!--    </record>-->
+    <record id="view_picking_form_inherit" model="ir.ui.view">
+        <field name="name">stock_picking_line_tree</field>
+        <field name="model">stock.picking</field>
+        <!--        <field name="priority" eval="33"/>-->
+        <field name="type">form</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@name='button_validate']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath>
+            <xpath expr="//header/button[@name='button_validate']" position="replace">
+                <button class="oe_highlight" invisible="state in ('draft', 'done', 'cancel')" name="call_wizard" string="Validate" type="object"/>
+            </xpath>
+            <xpath expr="//field[@name='move_ids_without_package']/tree" position="attributes">
+                <attribute name="editable">
+                    top</attribute>
+            </xpath>
+            <xpath expr="//form/sheet/notebook/page/field[@name='move_ids_without_package']/tree/field[@name='quantity']" position="attributes">
+                <attribute name="readonly">is_quantity_done_editable == True</attribute>
+                <attribute name="decoration-warning">
+                    True</attribute>
+            </xpath></field>
+    </record>
+    <!--    <record id="view_picking_form_inherit" model="ir.ui.view">-->
+    <!--        <field name="name">Stock Picking</field>-->
+    <!--        <field name="model">stock.picking</field>-->
+    <!--        <field name="inherit_id" ref="stock.view_picking_form"/>-->
+    <!--        <field name="priority" eval="800000"/>-->
+    <!--        <field name="arch" type="xml">-->
+    <!--            <xpath expr="//form/sheet/notebook/page/field[@name='move_ids_without_package']/tree/field[@name='quantity_done']"-->
+    <!--                   position="attributes">-->
+    <!--                <attribute name="attrs">{'readonly':[('is_quantity_done_editable', '=', True)]}</attribute>-->
+    <!--                <attribute name="decoration-warning">True</attribute>-->
+    <!--            </xpath>-->
+    <!--</field>-->
+    <!--    </record>-->
+    <record id="view_move_line_form_inhert" model="ir.ui.view">
+        <field name="name">view_move_line_form_inhert</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_move_line_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='quantity']" position="attributes">
+                <attribute name="string">
+                    Received Qty</attribute>
+            </xpath>
+            <xpath expr="//field[@name='quantity']" position="after">
+                <group>
+                    <field name="uom_line_value"/>
+                </group>
+            </xpath></field>
+    </record>
+</odoo>
