@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="sale_order_tree_inherit_inherit" model="ir.ui.view">
+            <field name="name">sale_order_tree_inherit</field>
+            <field name="model">sale.order</field>
+            <field eval="1000" name="priority"/>
+            <field name="inherit_id" ref="sale.view_quotation_tree_with_onboarding"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="x_po_name"/>
+                </xpath>
+             </field>
+        </record>
+
+        <record id="sale_order_tree_inherit_inherit_order_page" model="ir.ui.view">
+            <field name="name">sale_order_tree_inherit_order_page</field>
+            <field name="model">sale.order</field>
+            <field eval="1000" name="priority"/>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="x_po_name"/>
+                </xpath>
+             </field>
+        </record>
+
+        
+        
+        <record id="sale_order_form_inherit" model="ir.ui.view">
+            <field name="name">sale_order_form_inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='l10n_in_gst_treatment']" position="after">
+                    <field name="x_po_name"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="view_unwanted_po_tree" model="ir.ui.view">
+            <field name="name">unwanted po tree</field>
+            <field name="model">unwanted.po</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="po_num"/>
+                    <field name="zoho_id"/>
+                </tree></field>
+        </record>
+        <record id="search_unwanted_po" model="ir.ui.view">
+            <field name="name">search_unwanted_po</field>
+            <field name="model">unwanted.po</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="po_num"/>
+                    <field name="zoho_id"/>
+                </search></field>
+        </record>
+        <record id="view_picking_form_inherit" model="ir.ui.view">
+            <field name="name">Stock Picking</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/notebook/page/field[@name='move_ids_without_package']/tree/field[@name='product_id']" position="after">
+                    <field name="ordered_qty" readonly="1"/>
+<!--                    <field name="manual_uom_qty" optional="hide"/>-->
+                    <field name="uom_stock_qty" optional="hide"/>
+<!--                    <field name="change_actual_qty" optional="hide"/>-->
+                </xpath>
+<!--                <xpath expr="//form/sheet/notebook/page/field[@name='move_ids_without_package']/tree/field[@name='quantity']" position="before">-->
+<!--                    <field name="uom_line_value" optional="show" string="Conversion"/>-->
+<!--                </xpath>-->
+                <xpath expr="//form/sheet/notebook/page/field[@name='move_ids_without_package']/tree/field[@name='product_uom']" position="attributes">
+                    <attribute name="string">
+                        UOM</attribute>
+                </xpath>
+                <xpath expr="//form/sheet/notebook/page/field[@name='move_ids_without_package']/tree/field[@name='product_uom_qty']" position="attributes">
+                    <attribute name="string">
+                        Actual Qty</attribute>
+                </xpath>
+                <xpath expr="//form/sheet/notebook/page/field[@name='move_ids_without_package']/tree/field[@name='product_uom_qty']" position="after">
+                    <xpath expr="//field[@name='product_uom']" position="move"/>
+                </xpath></field>
+        </record>
+        <record id="zoho_company_form_inherit" model="ir.ui.view">
+            <field name="name">Credentials</field>
+            <field name="model">res.company</field>
+            <field name="inherit_id" ref="base.view_company_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//notebook" position="inside">
+                    <page name="zoho_info" string="Zoho Books">
+                        <field name="zoho_ids"/>
+                    </page>
+                </xpath></field>
+        </record>
+        <record id="purchase_request_order_tree_inherit_inherit" model="ir.ui.view">
+            <field name="name">purchase_order_tree_inherit</field>
+            <field name="model">purchase.order</field>
+            <field eval="1000" name="priority"/>
+            <field name="inherit_id" ref="purchase_request_order_tree_inherit"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <header>
+                        <button name="import_pos" string="Import PO's"  type="object" display="always" class="oe_highlight"/>
+                    </header>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="replace">
+                    <field decoration-info="state == 'partial' or state == 'sent'" decoration-success="state == 'complete_receive' or state == 'done'" decoration-warning="state == 'to approve' or state == 'purchase'" name="state" widget="badge"/>
+                </xpath>
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="decoration-success">
+                        zoho_id != False</attribute>
+                    <attribute name="decoration-it">
+                        zoho_id != False</attribute>
+                    <attribute name="decoration-primary">
+                        zoho_id == False</attribute>
+                </xpath></field>
+        </record>
+        <record id="purchase_order_form_inherit" model="ir.ui.view">
+            <field name="name">purchase_order_form_inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_qty']" position="after">
+                    <xpath expr="//field[@name='product_uom']" position="move"/>
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="zoho_id"/>
+                </xpath>
+                <xpath expr="//field[@name='zoho_id']" position="before">
+                    <field invisible="1" name="is_zoho"/>
+                </xpath>
+                <xpath expr="//field[@name='state']" position="replace">
+                    <field name="state" readonly="1" statusbar_visible="draft,sent,purchase,complete_receive" widget="statusbar"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='name']" position="after">
+                    <field name="ordered_qty" optional="hide"/>
+                    <field name="zoho_total_price" optional="hide"/>
+                    <field name="is_zoho" optional="hide"/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='product_qty']" position="attributes">
+                    <attribute name="string">
+                        Actual Qty</attribute>
+                </xpath>
+
+
+                <xpath expr="//field[@name='order_line']/tree/field[@name='qty_received']" position="attributes">
+                    <attribute name="string">
+                        Received</attribute>
+                    <attribute name="column_invisible">parent.state not in ['purchase', 'complete_receive', 'partial', 'done']</attribute>
+                </xpath>
+                                <xpath expr="//field[@name='order_line']/tree/field[@name='qty_received']" position="before">
+                    <xpath expr="//field[@name='product_uom']" position="move"/>
+                </xpath>
+                <xpath expr="//button[@name='button_cancel']" position="attributes">
+                    <attribute name="invisible">state == 'cancel'</attribute>
+                </xpath>
+                <xpath expr="//button[@name='button_done']" position="attributes">
+                    <attribute name="invisible">state in ['draft', 'sent', 'cancel', 'to approve', 'done']</attribute>
+                </xpath></field>
+        </record>
+        <record id="res_partner" model="ir.ui.view">
+            <field name="name">res.partner.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='category_id']" position="after">
+                    <field name="zoho_id"/>
+                    <field name="is_zoho"/>
+                </xpath>
+                <xpath expr="//field[@name='type']" position="before">
+                    <field name="contact_type"/>
+                </xpath>
+                <xpath expr="//field[@name='company_type']" position="replace">
+                    <field class="oe_edit_only" name="company_type" options="{'horizontal': true}" widget="radio"/>
+                </xpath></field>
+        </record>
+        <record id="res_partner_tree" model="ir.ui.view">
+            <field name="name">res.partner.tree</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <header>
+                        <button name="import_contacts" string="Import Contacts"  type="object" display="always" class="oe_highlight"/>
+                    </header>
+                </xpath>
+                <xpath expr="//field[@name='display_name']" position="before">
+                    <field name="zoho_id"/>
+                    <field name="is_zoho"/>
+                </xpath>
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="decoration-success">
+                        is_zoho == True</attribute>
+                    <attribute name="decoration-it">
+                        is_zoho == True</attribute>
+                    <attribute name="decoration-primary">
+                        is_zoho == False</attribute>
+                </xpath></field>
+        </record>
+        <record id="product_template_form_view" model="ir.ui.view">
+            <field name="name">product.template.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='default_code']" position="after">
+                    <field name="zoho_id"/>
+                    <field name="is_zoho"/>
+                </xpath>
+<!--                <xpath expr="//field[@name='uom_po_id']" position="after">-->
+<!--                    <field name="uom_value" string="Conversion Value"/>-->
+<!--                </xpath>-->
+</field>
+        </record>
+        <record id="product_template_tree_view" model="ir.ui.view">
+            <field name="name">product.template.tree_inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <header>
+                        <button name="import_products" string="Import Products"  type="object" display="always" class="oe_highlight"/>
+                    </header>
+                </xpath>
+                <xpath expr="//field[@name='default_code']" position="after">
+                    <field name="zoho_id"/>
+                    <field name="uom_value" string="Standard CV"/>
+                </xpath>
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="decoration-success">
+                        zoho_id != False</attribute>
+                    <attribute name="decoration-it">
+                        zoho_id != False</attribute>
+                    <attribute name="decoration-primary">
+                        zoho_id == False</attribute>
+                </xpath></field>
+        </record>
+        <record id="action_product_template" model="ir.actions.act_window">
+            <field name="name">Items</field>
+            <field name="res_model">product.template</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_zoho', '=', True)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Import Products From ZOHOBOOKS!
+                </p></field>
+        </record>
+        <record id="action_customer" model="ir.actions.act_window">
+            <field name="name">Customers</field>
+            <field name="res_model">res.partner</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_zoho', '=', True),('contact_type', '=', 'customer')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Import Customers From ZOHOBOOKS!
+                </p></field>
+        </record>
+        <record id="action_vendor" model="ir.actions.act_window">
+            <field name="name">Vendors</field>
+            <field name="res_model">res.partner</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_zoho', '=', True),('contact_type', '=', 'vendor')]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Import Vendors From ZOHOBOOKS!
+                </p></field>
+        </record>
+        <record id="action_purchase_order" model="ir.actions.act_window">
+            <field name="name">Purchase Order</field>
+            <field name="res_model">purchase.order</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_id" ref="purchase.purchase_order_kpis_tree"/>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('is_zoho', '=', True)]</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Import Purchasesorder From ZOHOBOOKS!
+                </p></field>
+        </record>
+        <record id="action_unwanted_po" model="ir.actions.act_window">
+            <field name="name">Unwanted PO</field>
+            <field name="res_model">unwanted.po</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_id" ref="view_unwanted_po_tree"/>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Import Purchasesorder From ZOHOBOOKS!
+                </p></field>
+        </record>
+        <menuitem action="action_vendor" id="sub_menu_contacts" name="Vendors" parent="zoho_main_root" sequence="2"/>
+        <menuitem action="action_product_template" id="submenu_items" name="Items" parent="zoho_main_root" sequence="5"/>
+        <menuitem action="action_purchase_order" id="Purchaseorder" name="Purchase Orders" parent="submenu_Purchases" sequence="10"/>
+        <menuitem action="action_unwanted_po" id="unwanted_po" name="Unwanted PO" parent="submenu_Purchases" sequence="30"/>
+    </data>
+</odoo>

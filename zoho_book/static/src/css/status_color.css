@@ -1,0 +1,11 @@
+[data-oe-model="purchase.order"] .o_field_widget[name=state][value="done"] {
+    color: red; /* Set the color for Option 1 */
+}
+
+[data-oe-model="purchase.order"] .o_field_widget[name=state][value="partial_receive"] {
+    color: blue; /* Set the color for Option 2 */
+}
+
+[data-oe-model="purchase.order"] .o_field_widget[name=state][value="complete_receive"] {
+    color: green; /* Set the color for Option 3 */
+}

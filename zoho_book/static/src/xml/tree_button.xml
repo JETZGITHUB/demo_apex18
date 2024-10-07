@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    <templates>
+        <t t-extend="ListView.buttons" t-name="zoho_books.buttons">
+            <t t-jquery="button.o_list_button_add" t-operation="after">
+                <button type="button" class="btn btn-primary import">
+                    Import Items
+                </button>
+            </t>
+        </t>
+        <t t-extend="ListView.buttons" t-name="zoho_books.contact_button">
+            <t t-jquery="button.o_list_button_add" t-operation="after">
+                <button type="button" class="btn btn-primary import">
+                    Import contacts
+                </button>
+            </t>
+        </t>
+        <t t-extend="ListView.buttons" t-name="zoho_books.purchase_button">
+            <t t-jquery="button.o_list_button_add" t-operation="after">
+                <button type="button" class="btn btn-primary import">
+                    Import PurchaseOrder
+                </button>
+            </t>
+        </t>
+    </templates>

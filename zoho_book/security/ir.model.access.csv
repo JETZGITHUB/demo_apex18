@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_zoho_books,access.zoho.books,model_zoho_books,,1,1,1,1
+access_log_history,access.log.history,model_log_history,,1,1,1,1
+access_unwanted_po,access.unwanted.po,model_unwanted_po,,1,1,1,1

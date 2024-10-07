@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="purchase_request_order_tree_inherit" model="ir.ui.view">
+        <field name="name">purchase_request_order_tree_inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="zoho_id"/>
+            </xpath>
+<!--            <xpath expr="//field[@name='zoho_id']" position="after">-->
+<!--                <field invisible="1" name="is_zoho"/>-->
+<!--            </xpath>-->
+            <xpath expr="//tree" position="attributes">
+                <attribute name="decoration-success">
+                    is_zoho == True
+                </attribute>
+                <attribute name="decoration-it">
+                    is_zoho == True
+                </attribute>
+                <attribute name="decoration-primary">
+                    is_zoho == False
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="view_zoho_books_form" model="ir.ui.view">
+        <field name="name">view_zoho_books_form</field>
+        <field name="model">zoho.books</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <h1 class="text-center">
+                        <field name="company_id"/>
+                        <!--                        <a href="https://www.apexindustries.ca" target="_blank">-->
+                        <!--                            <img class="img img-responsive" src="/zoho_book/static/img/download.png/download.png"/></a>-->
+                    </h1>
+                    <group string="CREDENTIALS">
+                        <field name="state"/>
+                        <field name="client_id"/>
+                        <field name="client_secrete"/>
+                        <field name="organization_id"/>
+                    </group>
+
+                    <div class="row">
+                        <div class="col-2">
+                            <button class="oe_highlight" name="zoho_code_generate" string="Get Code" type="object"/>
+                        </div>
+                        <div class="col-10">
+                            <field name="code"/>
+                        </div>
+                    </div>
+
+                    <br/>
+
+                    <div class="row">
+                        <div class="col-2" style="text-align:left">
+                            <button class="oe_highlight" name="zoho_refresh_token_generate" string="Refresh Token"
+                                    type="object"/>
+                        </div>
+                        <div class="col-10">
+                            <field name="refresh_token"/>
+                        </div>
+                    </div>
+
+                    <br/>
+                    <div class="row">
+                        <div class="col-2" style="text-align:left">
+                            <button class="oe_highlight" confirm="Are u Sure To Regenerate Access Token?"
+                                    name="zoho_authtoken_generate" string="Authenticate" type="object"/>
+                        </div>
+                        <div class="col-10">
+                            <field name="zoho_token"/>
+                        </div>
+                    </div>
+
+                    <group>
+                        <!--                    <group string="Auto Schedule">-->
+                        <!--                        <group>-->
+                        <!--                            <field class="col-6" name="auto_sign"/>-->
+                        <!--                            <field class="col-6" name="auto_import_items"/>-->
+                        <!--                            <field class="col-6" name="auto_import_contacts"/>-->
+                        <!--                        </group>-->
+                        <!--                    </group>-->
+                        <group string="IMPORT">
+                            <group>
+                                <button class="oe_highlight" confirm="Are u Sure To Import Contacts From ZOHOBOOKS?"
+                                        name="import_contacts_zoho" string="Import Contact" type="object"/>
+                                <button class="oe_highlight" confirm="Are u Sure To Import Items From ZOHOBOOKS?"
+                                        name="import_items_zoho" string="Import Items" type="object"/>
+                            </group>
+                            <group>
+                                <button class="oe_highlight"
+                                        confirm="Are u Sure To Import Purchase Orders From ZOHOBOOKS?"
+                                        name="import_purchase_zoho" string="Import Purchase" type="object"/>
+                                <button class="oe_highlight"
+                                        confirm="Aramikkalangala?? thakida thathikkku thathikku thaga thaga vikram vikram vikram!!!!!!!!"
+                                        name="custom_function" string="Custom Functions" type="object"/>
+<!--                                <button class="oe_highlight"-->
+<!--                                        confirm="aka dhum dhum dhum base"-->
+<!--                                        name="show_unit_of_measure" string="SHOW UOM" type="object"/>-->
+<!--                                <button class="oe_highlight"-->
+<!--                                        confirm="abelmoscus esculanthus"-->
+<!--                                        name="correct_actual_qty" string="Parabellam" type="object"/>-->
+                            </group>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Log History">
+                            <field name="log_history_ids" options="{'delete': [('organization_id', '=', False)]}">
+                                >
+                                <tree>
+                                    <field decoration-success="1" name="date"/>
+                                    <field decoration-success="1" name="count"/>
+                                    <field decoration-success="1" name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+    <record id="ir_cron_view_tree_inherit" model="ir.ui.view">
+        <field name="name">ir_cron_view_tree_inherit</field>
+        <field name="model">ir.cron</field>
+        <field name="inherit_id" ref="base.ir_cron_view_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='model_id']" position="after">
+                <field name="is_zoho"/>
+            </xpath>
+            <xpath expr="//tree" position="attributes">
+                <attribute name="decoration-success">
+                    is_zoho == True
+                </attribute>
+                <attribute name="decoration-it">
+                    is_zoho == True
+                </attribute>
+                <attribute name="decoration-primary">
+                    is_zoho == False
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="ir_cron_view_form_inherit" model="ir.ui.view">
+        <field name="name">ir_cron_view_form_inherit</field>
+        <field name="model">ir.cron</field>
+        <field name="inherit_id" ref="base.ir_cron_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='model_id']" position="after">
+                <field name="is_zoho"/>
+            </xpath>
+            <!--            <xpath expr="//field[@name='website_published']" position="replace">-->
+            <!--                <field name="website_published" attrs='{"invisible":[("is_zoho","=",True)]}'/>-->
+            <!--            </xpath>-->
+        </field>
+    </record>
+    <record id="action_schedule" model="ir.actions.act_window">
+        <field name="name">Schedule Action</field>
+        <field name="res_model">ir.cron</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('is_zoho', '=', True)]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Schedule Action
+            </p>
+        </field>
+    </record>
+    <record id="view_zoho_books_tree" model="ir.ui.view">
+        <field name="name">view_zoho_books_tree</field>
+        <field name="model">zoho.books</field>
+        <field name="arch" type="xml">
+            <tree multi_edit="1">
+                <field decoration-danger="1" name="company_id"/>
+                <field decoration-danger="1" name="organization_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_zoho_books_form_inherit" model="ir.ui.view">
+        <field name="name">view_zoho_books_form_inherit</field>
+        <field name="model">zoho.books</field>
+        <field name="inherit_id" ref="zoho_book.view_zoho_books_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="attributes">
+                <attribute name="delete">
+                    false
+                </attribute>
+            </xpath>
+        </field>
+    </record>
+    <record id="action_zoho_books" model="ir.actions.act_window">
+        <field name="name">Zoho Books</field>
+        <field name="res_model">zoho.books</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_id" ref="view_zoho_books_tree"/>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a Credentials!
+            </p>
+        </field>
+    </record>
+    <record id="view_log_history_tree" model="ir.ui.view">
+        <field name="name">view_zoho_books_tree</field>
+        <field name="model">log.history</field>
+        <field name="arch" type="xml">
+            <tree decoration-danger="po_number != False" decoration-success="po_number == False" multi_edit="1">
+                <field name="date"/>
+                <field name="count"/>
+                <field name="state"/>
+                <field name="purchase_order_ids"/>
+                <field invisible="1" name="po_number"/>
+            </tree>
+        </field>
+    </record>
+    <record id="view_log_history_form" model="ir.ui.view">
+        <field name="name">view_zoho_books_tree</field>
+        <field name="model">log.history</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field decoration-danger="po_number != False" decoration-success="po_number == False"
+                                   name="date"/>
+                            <field decoration-danger="po_number != False" decoration-success="po_number == False"
+                                   name="count"/>
+                            <field decoration-danger="po_number != False" decoration-success="po_number == False"
+                                   name="state"/>
+                        </group>
+                        <group>
+                            <!--                        <field name="zoho_book_id" string="Organization"/>-->
+                        </group>
+                        <!--                    <group>-->
+                        <!--                        <field name="po_number" attrs='{"invisible":[("po_number","=",False)]}'-->
+                        <!--                               decoration-danger="po_number != False" />-->
+                        <!--                    </group>-->
+                    </group>
+                    <group>
+                        <tree>
+                            <field decoration-danger="po_number != False" invisible="po_number == False"
+                                   name="po_number" string="Po_Number"/>
+                        </tree>
+                    </group>
+                    <field decoration-success="po_number == False" invisible="po_number != False"
+                           name="purchase_order_ids"/>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="action_log_history" model="ir.actions.act_window">
+        <field name="name">Log History</field>
+        <field name="res_model">log.history</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_id" ref="view_log_history_tree"/>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a Credentials!
+            </p>
+        </field>
+    </record>
+    <!--    <menuitem id="menu_zoho_books"-->
+    <!--              name="Zoho Books"-->
+    <!--              parent="zoho_main_root"-->
+    <!--              action="action_zoho_books"-->
+    <!--              sequence="0"/>-->
+    <menuitem id="zoho_main_root" name="Zoho Books" sequence="1" web_icon="zoho_book,static/description/icon.png"/>
+    <menuitem id="submenu_Purchases" name="Purchase" parent="zoho_main_root" sequence="9"/>
+    <menuitem id="menu_zoho_books" name="Zoho Books" parent="zoho_main_root" sequence="0"/>
+    <menuitem action="action_zoho_books" id="menu_credinatials" name="Credinatials" parent="menu_zoho_books"
+              sequence="1"/>
+    <!--    <menuitem id="menu_schedule_action"-->
+    <!--              name="Schudule Action"-->
+    <!--              parent="menu_zoho_books"-->
+    <!--              action="action_schedule"-->
+    <!--              sequence="2"/>-->
+    <!--    <menuitem id="menu_log_history"-->
+    <!--              name="Log History"-->
+    <!--              parent="zoho_main_root"-->
+    <!--              action="action_log_history"-->
+    <!--              sequence="10"/>-->
+    <menuitem action="action_log_history" id="menu_purchase_history" name="PO Import History" parent="submenu_Purchases"
+              sequence="11"/>
+</odoo>

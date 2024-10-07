@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<odoo>
+    <data>
+        <!-- Schedule the cron job to run every day at 1:00 AM -->
+        <record id="ir_cron_zoho_authtoken_generate" model="ir.cron">
+            <field name="name">Auto Access Token</field>
+            <field name="active" eval="True"/>
+<!--            <field name="user_id" ref="base.user_root"/>-->
+            <field name="is_zoho">True</field>
+            <field name="model_id" ref="model_zoho_books"/>
+            <field name="state">code</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="True"/>
+            <field name="code">model.zoho_authtoken_generate_auto()</field>
+        </record>
+
+<!--        <record id="ir_cron_auto_import_Item" model="ir.cron">-->
+<!--            <field name="name">Auto Import Item</field>-->
+<!--            <field name="active" eval="True"/>-->
+<!--&lt;!&ndash;            <field name="user_id" ref="base.user_root"/>&ndash;&gt;-->
+<!--            <field name="is_zoho">True</field>-->
+<!--            <field name="model_id" ref="model_zoho_books"/>-->
+<!--            <field name="state">code</field>-->
+<!--            <field name="interval_number">1</field>-->
+<!--            <field name="interval_type">minutes</field>-->
+<!--            <field name="numbercall">-1</field>-->
+<!--            <field name="doall" eval="True"/>-->
+<!--            <field name="code">model.auto_import_items_zoho()</field>-->
+<!--        </record>-->
+<!--        <record id="ir_cron_auto_import_contacts" model="ir.cron">-->
+<!--            <field name="name">Auto Import Contacts</field>-->
+<!--            <field name="active" eval="True"/>-->
+<!--&lt;!&ndash;            <field name="user_id" ref="base.user_root"/>&ndash;&gt;-->
+<!--            <field name="is_zoho">True</field>-->
+<!--            <field name="model_id" ref="model_zoho_books"/>-->
+<!--            <field name="state">code</field>-->
+<!--            <field name="interval_number">1</field>-->
+<!--            <field name="interval_type">minutes</field>-->
+<!--            <field name="numbercall">-1</field>-->
+<!--            <field name="doall" eval="True"/>-->
+<!--            <field name="code">model.auto_import_contacts_zoho()</field>-->
+<!--        </record>-->
+    </data>
+</odoo>
