@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- product.template form view -->
+    <record id="inherit_product_template_form_view" model="ir.ui.view">
+        <field name="name">product.template.form.inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_only_form_view"/>
+        <field name="arch" type="xml">
+            <field name="default_code" position="after">
+                <field name="drawing_number" string="Drawing Number"/>
+                <field name="revision" string="Revision"/>
+                <field name="program_number" string="Program Number"/>
+                <field name="cycle_time"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

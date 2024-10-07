@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="inherit_purchase_internal_layout">
+        <!-- Multicompany -->
+        <t t-if="o and 'company_id' in o">
+            <t t-set="company" t-value="o.company_id"/>
+        </t>
+        <t t-if="not o or not 'company_id' in o">
+            <t t-set="company" t-value="res_company"/>
+        </t>
+        <div class="header">
+            <div class="row">
+                <div class="col-5">
+                    <div>
+                        <img t-if="company.logo" t-att-src="'data:image/png;base64,%s' % (company.logo.decode('utf-8') if company.logo else '')" style="max-height: 90px;"/>
+                    </div>
+                    <div style="margin-top:22px;" t-field="company.report_header" name="moto"/>
+                </div>
+                <div class="col-7">
+                    <div name="company_address">
+                        <span t-field="company.partner_id"/><br/>
+                        <span t-field="company.street"/>
+                        <span t-field="company.street2"/>
+                        <span t-field="company.city"/>
+                        <span t-field="company.state_id"/>
+                        <span t-field="company.country_id"/><![CDATA[&nbsp;]]>
+                        <t t-if="company.zip">
+                            <span t-field="company.zip"/><![CDATA[&nbsp;]]> <![CDATA[&nbsp;]]>
+                        </t>
+                        <t t-if="company.website">
+                            <span t-field="company.website"/>
+                        </t>
+                        <t t-if="company.phone">
+                             <span t-field="company.phone"/>
+                        </t>
+                    </div>
+                </div>
+            </div>
+            <br/>
+            <div style="border-top: solid black 1px;"></div>
+        </div>
+        <div class="article">
+          <t t-raw="0" />
+        </div>
+    </template>
+
+</odoo>

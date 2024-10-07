@@ -1,0 +1,132 @@
+  <odoo>
+    <data>
+        <!-- explicit list view definition -->
+
+        <record model="ir.ui.view" id="mrp_bom_form_view_inherit_form">
+            <field name="name">mrp.bom.inherit</field>
+            <field name="model">mrp.bom</field>
+            <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+            <field name="arch" type="xml">
+                <field name='product_tmpl_id' position="replace">
+                    <field name="product_tmpl_id" options="{'no_create': True}"/>
+                </field>
+                <field name='product_tmpl_id' position="after">
+                    <field name="cus_name" options="{'no_create': True}"/>
+                </field>
+                <xpath expr="/form/sheet/notebook/page/field[@name='bom_line_ids']/tree/field[@name='product_id']"
+                       position="replace">
+                    <field name="product_id" context="{'default_type': 'product'}" options="{'no_create': True}"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="recruit_prod_mrp">
+            <field name="name">recruit.mrp.prod</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+<!--                <field name="product_id" position="replace">-->
+<!--                    <field name="product_id" attrs="{'readonly': [('has_moves', '=', True)]}"-->
+<!--                           domain="[('bom_ids', '!=', False), ('bom_ids.active', '=', True), ('bom_ids.type', '=', 'normal')]"-->
+<!--                           options="{'no_create': True}"/>-->
+<!--                </field>-->
+<!--                <xpath expr="//form/header/button[6]" position="attributes">-->
+<!--                    <attribute name="invisible">1</attribute>-->
+
+<!--                </xpath>-->
+
+                <xpath expr="//form/sheet/group/group[1]/field[@name='product_id']" position="after">
+
+<!--                    <field name="qos"/>-->
+<!--                    <field name="sch_date"/>-->
+                    <field name="cus_name"/>
+                    <field name="cus_code" invisible="1"/>
+                    <field name="po_num"/>
+                    <field name="po_date"/>
+<!--                    <field name="colour"/>-->
+<!--                    <field name="quantity"/>-->
+                    <field name="no_pack_boxes"/>
+
+                </xpath>
+
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="draw_num"/>
+                    <field name="revision"/>
+<!--                     <field name="machine_name"/> -->
+<!--                    <field name="machine_number"/>-->
+                    <field name="program_number"/>
+                    <field name="cycle_time"/>
+                    <field name="tes_cert" invisible="1"/>
+                    <field name="ins_term" invisible="1"/>
+                    <field name="ins_cert" invisible="1"/>
+                    <field name="remark"/>
+                    <field name="order_prepared_by"/>
+                </xpath>
+
+                <field name="name" position="attributes">
+                    <attribute name="readonly">0</attribute>
+                </field>
+
+                <xpath expr="//field[@name='move_raw_ids']/tree/field[@name='product_id']" position="after">
+                    <field name="available_qty" />
+                </xpath>
+
+            </field>
+        </record>
+<!--        <record id="mrp_production_tree_view_inherit" model="ir.ui.view">-->
+<!--            <field name="name">mrp.production.tree.inherit</field>-->
+<!--            <field name="model">mrp.production</field>-->
+<!--            <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//field[@name='state']" position="after">-->
+<!--                    <field name="mrp_scraped_qty" string="Scrap Qty" optional="show"/>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+        <record id="mrp_production_tree_view" model="ir.ui.view">
+            <field name="name">mrp.production.tree</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='state']" position="after">
+                    <field name="mrp_scraped_qty" string="Scrap Qty" readonly="1" optional="show"/>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="purchase_order_tree_inherit" model="ir.ui.view">
+            <field name="name">purchase_order_tree_inherit</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_kpis_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='partner_id']" position="after">
+                    <field name="partner_ref"/>
+                </xpath>
+            </field>
+        </record>
+
+
+<!--        <record id="mrp_production_view_inherit" model="ir.ui.view">-->
+<!--            <field name="name">mrp.production inherit</field>-->
+<!--            <field name="model">mrp.production</field>-->
+<!--            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//field[@name='cycle_time']" position="replace">-->
+<!--                    <field name="cycle_time_"/>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+
+<!--        <record id="mrp_production_form_view_inherit" model="ir.ui.view">-->
+<!--            <field name="name">mrp.production.form.view.inherit</field>-->
+<!--            <field name="model">mrp.production</field>-->
+<!--            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <xpath expr="//field[@name='program_number']" position="after">-->
+<!--                    <field name="cycle_time_"/>-->
+<!--                </xpath>-->
+<!--            </field>-->
+<!--        </record>-->
+
+    </data>
+</odoo>

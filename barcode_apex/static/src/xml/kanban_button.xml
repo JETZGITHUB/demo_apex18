@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="barcode_apex.kanban_button" xml:space="preserve">
+   <t t-extend="KanbanView.buttons" t-name="barcode_apex.kanban_button">
+       <t t-jquery="button" t-operation="after">
+           <script type="text/javascript">
+           console.log('Widget Object:', widget);
+       </script>
+               <button t-if="widget.modelName == 'product.template'"
+                   class="btn btn-primary generate_barcode_kanban oe_highlight"
+                   type="button">Generate</button>
+       </t>
+   </t>
+</templates>

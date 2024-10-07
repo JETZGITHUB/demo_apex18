@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+<!--        <record-->
+<!--         id="print_report"-->
+<!--         model="mrp.production"-->
+<!--         string="Print Report"-->
+<!--         report_type="qweb-pdf"-->
+<!--         name="manufacter_rck.report_print"-->
+<!--         file="manufacter_rck.report_print"/>-->
+
+        <record
+         id="xlsx_report"
+         model="res.partner"
+         string="BOM Report"
+         report_type="xlsx"
+         name="manufacter_rck.report_print_xlsx"
+         file="manufacter_rck.report_print_xlsx"/>
+
+
+    </data>
+</odoo>

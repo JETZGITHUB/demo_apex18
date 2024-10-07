@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_scan_data_tree" model="ir.ui.view">
+        <field name="name">view_scan_data_tree</field>
+        <field name="model">scan.data</field>
+        <field name="arch" type="xml">
+            <tree multi_edit="1" default_order="created_date desc">
+                <field name="created_date"/>
+                <field name="product_id"/>
+                <field name="category"/>
+                <field name="quantity"/>
+                <field name="cost"/>
+                <field name="total_price"/>
+                <field name="uom_id" string="Unit"/>
+                <field name="state" widget="badge" class="oe_right"
+                decoration-info="state == 'draft'"
+                decoration-success="state == 'done'"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_scan_data_form" model="ir.ui.view">
+        <field name="name">view_scan_data_form</field>
+        <field name="model">scan.data</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" widget="statusbar" statusbar_visibe="new, done" readonly="1"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="created_date"/>
+                        <field name="product_id"/>
+                     </group>
+                        <group>
+                            <field class="col-3" name="quantity"/>
+                            <field class="col-4" name="uom_id"/>
+                        </group>
+
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_scan_data" model="ir.actions.act_window">
+        <field name="name">Scan Data</field>
+        <field name="res_model">scan.data</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Scanned Datas!
+            </p>
+        </field>
+    </record>
+    <menuitem id="qrcode_data"
+              name="Scan Data"
+              web_icon="barcode_apex,static/description/qrcode_apex.png"
+              sequence="1"/>
+
+    <menuitem id="submenu_scan_data"
+              name="Scan Data"
+              parent="qrcode_data"
+              action="action_scan_data"
+              sequence="4"/>
+</odoo>

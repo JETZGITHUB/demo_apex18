@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_own_consumption_wizard_form" model="ir.ui.view">
+        <field name="name">view_own_consumption</field>
+        <field name="model">own.consumption.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="product_id"/>
+                        <label for="quantity"/>
+                        <div class="o_row no-gutters d-flex">
+                            <field name="quantity" required="1"/>
+                            <div>
+                                /Available qty:
+                                <field name="onhand_qty"/>
+                                <field class="oe_inline text-left" name="uom_id"/>
+                            </div>
+                        </div>
+                        <field name="location_id"/>
+                        <field name="location_dest_id"/>
+                        <field name="use_for"/>
+                    </group>
+                    <footer>
+                        <button class="oe_highlight" name="confirm" string="Confirm" type="object"/>
+                        <button class="btn btn-default" special="cancel" string="Discard"/>
+                    </footer>
+                </sheet>
+            </form></field>
+    </record>
+    <record id="product_template_form_view_procurement_button_inherit" model="ir.ui.view">
+        <field name="name">product.template_procurement_inherit</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="stock.product_template_form_view_procurement_button"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form" position="inside">
+                <field name="show_on_hand_qty_status_button"/>
+            </xpath>
+            <data>
+                <header position="inside">
+                    <button invisible="show_on_hand_qty_status_button == False" name="action_own_consumption_wizard" string="Own Usage" type="object"/>
+                </header>
+            </data></field>
+    </record>
+</odoo>

@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="mrp.report_mrporder">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <t t-call="manufacter_rck.inherit_purchase_internal_layout">
+                    <div class="page">
+                        <div class="oe_structure"/>
+                        <div class="row">
+                            <div class="col-12" style="margin-top:40px;font-size:13px">
+                                <table class="table table-condensed table-bordered">
+                                <tr>
+                                    <td style="width:22%;padding: 8px;"><strong>CUSTOMER NAME</strong></td>
+                                    <td style="padding: 8px;"><span t-field="o.cus_name"/></td>
+                                    <td style="width:22%;padding: 8px;" ><strong>ORDER NUMBER</strong></td>
+                                    <td style="width:25%;padding: 8px;"><span t-field="o.name"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px;"><strong>PO NO</strong></td>
+                                    <td style="padding: 8px;"><span t-field="o.po_num"/></td>
+                                    <td style="padding: 8px;"><strong>PO DATE</strong></td>
+                                    <td style="padding: 8px;"><span t-field="o.po_date"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="padding: 8px;"><strong>DATE</strong></td>
+                                    <td style="padding: 8px;"><span t-field="o.date_planned_start"/></td>
+                                    <td style="padding: 8px;"><strong>PRINTING DATE</strong></td>
+                                    <td style="padding: 8px;"><span t-esc="time.strftime('%Y-%m-%d')" t-options='{"widget": "date"}'/></td>
+                                </tr>
+                                <tr>
+<!--                                     <td style="padding: 8px;"><strong>MACHINE NAME</strong></td>
+                                    <td style="padding: 8px;"><span t-field="o.machine_name"/></td> -->
+                                    <td style="padding: 8px;"><strong>PROGRAM NUMBER</strong></td>
+                                    <td style="padding: 8px;"><span t-field="o.program_number"/></td>
+                                </tr>
+<!--                                <tr>-->
+<!--                                    <td style="padding: 8px;"><strong>MACHINE NUMBER</strong></td>-->
+<!--                                    <td style="padding: 8px;"><span t-field="o.machine_number"/></td>-->
+<!--                                    <td style="padding: 8px;"></td>-->
+<!--                                    <td style="padding: 8px;"></td>-->
+<!--                                </tr>-->
+                            </table>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12" style="margin:15px auto 10px">
+                                <h2 style="font-size:20px;font-weight:800">Production Order # : <span t-field="o.name"/></h2>
+                            </div>
+                        </div>
+                        <table class="table table-condensed" style="font-size:13px">
+                            <thead>
+                                 <tr style="background-color:#d2d6d9;color:black;">
+<!--                                <tr style="background-color:#0092df;color:white;">-->
+                                    <th style="padding: 7px;"><strong>PART NUMBER</strong></th>
+                                    <th style="padding: 7px;"><strong>DRAWING NUMBER</strong></th>
+                                    <th class="text-center" style="padding: 7px;"><strong>REVISION</strong></th>
+                                    <th class="text-center" style="padding: 7px;"><strong>PRODUCT DESCRIPTION</strong></th>
+                                    <th class="text-right" style="padding: 7px;"><strong>QUANTITY</strong></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="padding: 7px;" class="text-center">
+                                        <span t-field="o.product_id.code"/>
+                                    </td>
+                                    <td style="padding: 7px;" class="text-center">
+                                        <span t-field="o.draw_num"/>
+                                    </td>
+                                    <td style="padding: 7px;" class="text-center">
+                                        <span t-field="o.revision"/>
+                                    </td>
+                                    <td style="padding: 7px;" class="text-center">
+                                        <span t-field="o.product_id"/>
+                                    </td>
+                                    <td style="padding: 7px;" class="text-right">
+<!--                                        <span t-field="o.product_qty"/>-->
+                                        <t t-esc="round(o.product_qty,2)"/>
+                                        <span t-field="o.product_uom_id.name" groups="uom.group_uom"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h2 t-if="o.move_raw_ids" style="font-size:20px;font-weight:800">Bill Of Material</h2>
+
+                        <table style="font-size:13px" class="table table-condensed table-bordered" t-if="o.move_raw_ids">
+                            <thead>
+                                <tr>
+                                    <td align="center" colspan="6"><strong>Products to Consume</strong></td>
+<!--                                    <td colspan="2"></td>-->
+                                </tr>
+                                 <tr style="background-color:#d2d6d9;color:black;">
+<!--                                <tr style="background-color:#0092df;color:white;">-->
+                                    <td style="padding: 7px;"><strong>S.No</strong></td>
+                                    <td style="padding: 7px;"><strong>CODE</strong></td>
+                                    <td style="padding: 7px;" class="text-center"><strong>PRODUCT</strong></td>
+                                    <td style="padding: 7px;" class="text-center"><strong>DRAWING NUMBER</strong></td>
+                                    <td style="padding: 7px;" class="text-center"><strong>REVISION</strong></td>
+                                    <td style="padding: 7px;" class="text-right"><strong>QUANTITY</strong></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-set="sl_no" t-value="1"/>
+                                <t t-if="o.move_raw_ids">
+                                    <tr t-foreach="o.move_raw_ids" t-as="line">
+                                        <td style="padding: 7px;" class="text-center">
+                                            <span  t-esc="sl_no"/>
+                                        </td>
+                                        <td style="padding: 7px;" class="text-center">
+                                            <span t-field="line.product_id.code"/>
+                                        </td>
+                                        <td style="padding: 7px;" class="text-center">
+                                            <span t-field="line.product_id"/>
+                                        </td>
+                                        <td style="padding: 7px;" class="text-center">
+                                            <span t-field="line.product_id.drawing_number"/>
+                                        </td>
+                                        <td style="padding: 7px;" class="text-center">
+                                            <span t-field="line.product_id.revision"/>
+                                        </td>
+                                        <td style="padding: 7px;" class="text-right">
+<!--                                            <span t-field="line.product_uom_qty"/>-->
+                                            <t t-esc="round(line.product_uom_qty,2)"/>
+                                            <span t-field="line.product_uom.name" groups="uom.group_uom"/>
+                                        </td>
+                                            <t t-set="sl_no" t-value="sl_no+1"/>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
+                        <br/>
+                        <div class="row">
+                            <div class="col-12">
+                                <table style="font-size:13px" class="table table-condensed table-bordered">
+                                <tr>
+<!--                                    <td style="width:20%;padding:8px"><strong>COLOUR</strong></td>-->
+<!--                                    <td style="width:30%;padding:8px"><span t-field="o.colour"/></td>-->
+                                    <td style="width:20%;padding:8px"><strong>NUMBER OF BOXES</strong></td>
+                                    <td style="width:30%;padding:8px"><span t-field="o.no_pack_boxes"/></td>
+                                    <td style="width:20%;padding:8px"><strong>REMARKS</strong></td>
+                                    <td style="width:30%;padding:8px"><span t-field="o.remark"/></td>
+                                </tr>
+                                <tr>
+                                    <td style="width:20%;padding:8px"><strong>CYCLE TIME</strong></td>
+                                    <td style="width:30%;padding:8px"><span t-field="o.cycle_time"/></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+
+                            </table>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:90px">
+                            <div class="col-4">
+                                <strong>Prepared By</strong>
+                            </div>
+                            <div class="col-4" style="text-align:center">
+                                <strong>Checked By</strong>
+                            </div>
+                            <div class="col-4" style="text-align:right">
+                                <strong>Approved By</strong>
+                            </div>
+                        </div>
+                        <div class="oe_structure"/>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+</odoo>

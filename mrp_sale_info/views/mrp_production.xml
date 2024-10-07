@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mrp_production_form_view" model="ir.ui.view">
+        <field name="name">MRP Production Form with Sale Order</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+        <field name="arch" type="xml">
+<!--            <xpath expr="//field[@name='move_raw_ids']/tree/field[@name='forecast_availability']" position="after">-->
+<!--                &lt;!&ndash;                <field name="old_available_qty" readonly="1"/>&ndash;&gt;-->
+<!--                <field name="store_qty"/>-->
+<!--                <field name="actual_consumed_qty"/>-->
+<!--                <field name="return_qty"/>-->
+<!--            </xpath>-->
+            <field name="bom_id" position="after">
+                <field name="product_pack"/>
+                <field name="pack_qty"/></field>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button class="oe_stat_button" help="Shows the Transfers" icon="fa-book" name="open_view_pack_done_picking" type="object">
+                    <field name="move_pack_transfer_count" string="Packaging Transfer" widget="statinfo"/>
+                </button>
+                <!--                   <button name="transfer_return_product_view"-->
+                <!--                    type="object" help="Shows the Transfers" class="oe_stat_button" icon="fa-book">-->
+                <!--                    <field name="return_product_count" widget="statinfo" string="Return Product Transfer"/>-->
+                <!--                </button>-->
+            </xpath>
+            <xpath expr="//field[@name='move_raw_ids']/tree/field[@name='product_uom_qty']" position="attributes">
+                <attribute name="invisible">True</attribute>
+            </xpath></field>
+    </record>
+    <record id="mrp_bill_form_view" model="ir.ui.view">
+        <field name="name">MRP Bom</field>
+        <field name="model">mrp.bom</field>
+        <field name="inherit_id" ref="mrp.mrp_bom_form_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='type']" position="after">
+                <field name="product_pack"/>
+                <field name="pack_qty"/>
+            </xpath></field>
+    </record>
+    <record id="view_move_tree_custom" model="ir.ui.view">
+        <field name="name">stock.move.tree</field>
+        <field name="model">stock.move</field>
+        <field eval="8" name="priority"/>
+        <field name="arch" type="xml">
+            <tree create="0" string="Moves">
+                <field decoration-danger="(state not in ('cancel','done')) and date > current_date" groups="base.group_no_one" name="date"/>
+                <field name="reference"/>
+                <field invisible="1" name="picking_type_id"/>
+                <field name="product_id"/>
+<!--                <field name="store_qty"/>-->
+<!--                <field name="actual_consumed_qty"/>-->
+<!--                <field name="return_qty"/>-->
+                <field decoration-info="state not in ('done', 'cancel')" decoration-success="state == 'done'" name="state" widget="badge"/>
+            </tree></field>
+    </record>
+    <record id="stock_move_action_custom" model="ir.actions.act_window">
+        <field name="name">Stock Moves</field>
+        <field name="res_model">stock.move</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_id" ref="view_move_tree_custom"/>
+        <field name="search_view_id" ref="stock.view_move_search"/>
+        <field name="context">{'search_default_groupby_product_id': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No stock move found
+            </p>
+            <p>
+                This menu gives you the full traceability of inventory
+                operations on a specific product. You can filter on the product
+                to see all the past or future movements for the product.
+            </p></field>
+    </record>
+    <menuitem action="stock_move_action_custom" id="stock_move_menu_cus" name="MRP Report" parent="mrp.menu_mrp_root"/>
+    <record id="customer_inventory_report_wizard" model="ir.ui.view">
+        <field name="name">custom.inventory.report.wizard</field>
+        <field name="model">custom.stock.inventory.report</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="start_date"/>
+                        <field name="filter_by" widget="radio"/>
+                    </group>
+                    <group>
+                        <field name="end_date"/>
+                    </group>
+                </group>
+                <group>
+                    <group>
+                        <field invisible="filter_by == 'order'" name="product_ids" required="filter_by == 'product'" widget="many2many_tags"/>
+                        <field invisible="filter_by == 'product'" name="workorder_ids" required="filter_by == 'order'" widget="many2many_tags"/>
+                    </group>
+                    <group>
+                    </group>
+                </group>
+                <footer>
+                    <button class="btn-primary" name="action_print" string="Download Excel" type="object"/>
+                    <button class="btn-primary" special="cancel" string="Cancel"/>
+                </footer>
+            </form></field>
+    </record>
+<!--    <record id="action_customer_inventory_report_wizard" model="ir.actions.act_window">-->
+<!--        <field name="name">Inventory Transfer Report</field>-->
+<!--        <field name="res_model">custom.stock.inventory.report</field>-->
+<!--        <field name="view_mode">form</field>-->
+<!--        <field name="target">new</field>-->
+<!--    </record>-->
+<!--    <menuitem action="action_customer_inventory_report_wizard" id="menu_customer_inventory_report_wizard" name="Inventory Transfer Report" parent="mrp.menu_mrp_reporting" sequence="2"/>-->
+<!--        <record-->
+<!--                id="report_inventory_transfer_report"-->
+<!--                model="custom.stock.inventory.report"-->
+<!--                string="Inventory Report Transfer"-->
+<!--                report_type="xlsx"-->
+<!--                name="mrp_sale_info.inventory_transfer_report"-->
+<!--                file="mrp_sale_info.inventory_transfer_report"-->
+<!--                print_report_name="(object._get_report_base_filename())"-->
+<!--        />-->
+<!--          <record id="view_stock_move_operations_finished_inherit" model="ir.ui.view">-->
+<!--                <field name="name">stock.move.operations</field>-->
+<!--                <field name="model">stock.move</field>-->
+<!--                <field name="inherit_id" ref="stock.view_stock_move_operations" />-->
+<!--                <field name="arch" type="xml">-->
+<!--                    <xpath expr="//field[@name='move_line_ids']" position="before">-->
+<!--                        <group>-->
+<!--                            <group>-->
+<!--                                <field name="store_qty"/>-->
+<!--                            </group>-->
+<!--                            <group>-->
+<!--                            </group>-->
+<!--                        </group>-->
+<!--                    </xpath>-->
+<!--    </field>-->
+<!--            </record>-->
+</odoo>

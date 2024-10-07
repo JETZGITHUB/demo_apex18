@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+ <record id="product_template_form_view_barcode_inherit" model="ir.ui.view">
+            <field name="name">product.template.inherit_barcode</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='purchase_ok']" position="after">
+                    <field name="id_barcode" widget="image" class="oe_avatar"/>
+                </xpath>
+            </field>
+ </record>
+
+<!--    <template id="product.report_simple_barcode">-->
+<!--        <div style="width: 32%; display: inline-table; height: 10rem;">-->
+<!--                <table class="table table-bordered mb-0" style="border: 2px solid black;">-->
+<!--                    <tr>-->
+<!--                        <th class="table-active text-left" style="height: 4rem;">-->
+<!--                            <strong t-field="product.display_name"/>-->
+<!--                        </th>-->
+<!--                    </tr>-->
+<!--                    <tr>-->
+<!--                        <td class="text-center align-middle" style="height: 6rem;">-->
+<!--                            <t t-if="product.barcode">-->
+<!--                                    <img t-att-src="'/report/barcode/QR/'+product.barcode" style="width:150px;height:150px" alt="Barcode"/>-->
+<!--                            </t>-->
+<!--                            <t t-else=""><span class="text-muted">No barcode available</span></t>-->
+<!--                        </td>-->
+<!--                    </tr>-->
+<!--                </table>-->
+<!--            </div>-->
+<!--    </template>-->
+</odoo>

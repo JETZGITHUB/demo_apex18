@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_stock_pickings_form_inherit" model="ir.ui.view">
+        <field name="name">Stock Picking</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='user_id']" position="after">
+                <field invisible="1" name="validate_invisible"/>
+            </xpath>
+<!--            <xpath expr="//form/sheet/notebook/page/field[@name='move_ids_without_package']/tree/field[@name='quantity']" position="attributes">-->
+<!--                <attribute name="readonly">is_quantity_done_editable == False</attribute>-->
+<!--            </xpath>-->
+            <xpath expr="//button[@name='button_validate']" position="attributes">
+                <attribute name="invisible">validate_invisible == False and (state in ('waiting', 'confirmed'))</attribute>
+            </xpath></field>
+    </record>
+    <!-- product.template form view -->
+<!--    <record id="inherit_product_template_form_view" model="ir.ui.view">-->
+<!--        <field name="name">product.template.form.inherit</field>-->
+<!--        <field name="model">product.template</field>-->
+<!--        <field name="inherit_id" ref="product.product_template_only_form_view"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <field name="default_code" position="after">-->
+<!--                <field name="drawing_number" string="Drawing Number"/>-->
+<!--                <field name="revision" string="Revision"/>-->
+<!--                <field name="program_number" string="Program Number"/>-->
+<!--                <field name="cycle_time"/></field></field>-->
+<!--    </record>-->
+    <record id="view_users_form_inherit" model="ir.ui.view">
+        <field name="name">res_users_form_inherit</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//notebook" position="inside">
+                <page name="po_Access" string="PO Access">
+                    <field name="role"/>
+                </page>
+            </xpath></field>
+    </record>
+    <record id="po_access_tree" model="ir.ui.view">
+        <field name="name">po.access</field>
+        <field name="model">po.access</field>
+        <field name="arch" type="xml">
+            <tree create="1" multi_edit="1">
+                <field name="name"/>
+                <field name="receive_access"/>
+                <field name="validate_access"/>
+            </tree></field>
+    </record>
+    <record id="action_po_access" model="ir.actions.act_window">
+        <field name="name">po</field>
+        <field name="res_model">po.access</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="po_access_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                PO Access!
+            </p></field>
+    </record>
+    <menuitem action="action_po_access" id="menu_po_access" name="PO Access" parent="base.menu_custom" sequence="0"/>
+    <record id="purchase_order_form_inherit" model="ir.ui.view">
+        <field name="name">purchase_order_form_inherit</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name ='date_planned']" position="after">
+                <field invisible="1" name="receive_invisible"/>
+            </xpath>
+                        <xpath expr="/form" position="attributes">
+                            <attribute name="create">{'false':[('receive_invisible', '=', False)]}
+            </attribute>
+                            <attribute name="edit">{'false':[('receive_invisible', '=', False)]}
+            </attribute>
+                        </xpath>
+                        <xpath expr="//button[@name ='action_view_picking']" position="attributes">
+                            <attribute name="attrs">{'invisible': ['|',('receive_invisible', '=', False), '|', '|' , ('is_shipped',
+                                '=', True), ('state','not in', ('purchase','partial', 'done')), ('picking_count', '=', 0)]}
+            </attribute>
+                        </xpath>
+        </field>
+    </record>
+</odoo>

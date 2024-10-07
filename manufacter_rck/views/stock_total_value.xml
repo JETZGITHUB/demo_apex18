@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <record id="stock_valuation_layer_tree_inherit" model="ir.ui.view">
+        <field name="name">stock_valuation_layer_tree_inherit</field>
+        <field name="model">stock.valuation.layer</field>
+        <field name="inherit_id" ref="stock_account.stock_valuation_layer_tree"/>
+         <field name="arch" type="xml">
+             <xpath expr="//field[@name='quantity']" position="attributes">
+                <attribute name="sum">Available Qty</attribute>
+             </xpath>
+             <xpath expr="//field[@name='quantity']" position="attributes">
+                <attribute name="optional">show</attribute>
+             </xpath>
+             <xpath expr="//field[@name='uom_id']" position="after">
+                <field name="categ_id"/>
+             </xpath>
+             <xpath expr="//field[@name='categ_id']" position="attributes">
+                <attribute name="optional">show</attribute>
+             </xpath>
+             <xpath expr="//field[@name='uom_id']" position="attributes">
+                <attribute name="optional">show</attribute>
+             </xpath>
+         </field>
+    </record>
+
+    <record id="custom_mrp_production_tree_view" model="ir.ui.view">
+            <field name="name">mrp.production.tree</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_tree_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="default_order">date_planned_start desc</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_inventory_valuation_search_inherit" model="ir.ui.view">
+            <field name="name">view_inventory_valuation_search_inherit</field>
+            <field name="model">stock.valuation.layer</field>
+            <field name="inherit_id" ref="stock_account.view_inventory_valuation_search"/>
+            <field name="arch" type="xml">
+                <xpath expr="//search/group" position="inside">
+                    <filter string='RAW MATERIAL' name="group_by_categ_id" domain="[('categ_id.id', '=', '5')]"/>
+                    <filter string='Finished goods' name="group_by_categ_id" domain="[('categ_id.id', '=', '4')]"/>
+                </xpath>
+            </field>
+        </record>
+
+</odoo>

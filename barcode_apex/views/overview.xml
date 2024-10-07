@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_scan_overview_tree" model="ir.ui.view">
+        <field name="name">view_scan_overview_tree</field>
+        <field name="model">scan.overview</field>
+        <field name="arch" type="xml">
+            <tree default_order="created_date desc" multi_edit="1">
+                <field name="created_date"/>
+                <field name="ref"/>
+                <field class="oe_right" decoration-info="state == 'draft'" decoration-success="state == 'done'" name="state" widget="badge"/>
+            </tree></field>
+    </record>
+    <record id="view_scan_overview_form" model="ir.ui.view">
+        <field name="name">view_scan_overview_form</field>
+        <field name="model">scan.overview</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <field name="state" readonly="1" statusbar_visibe="new, done" widget="statusbar"/>
+                    <button class="oe_highlight" name="compare_inventory" string="Compare" type="object"/>
+                    <button invisible="state == 'draft'" name="set_to_draft" string="Set to draft" type="object"/>
+                    <button invisible="state == 'done'" name="mark_as_done" string="Mark as Done" type="object"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button class="oe_stat_button" icon="fa-book" name="show_scan_datas" type="object">
+                            <field name="scan_data_count" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <group>
+                        <field name="created_date"/>
+                        <field name="ref"/>
+                        <field name="price"/>
+                    </group>
+                    <field context="{'default_state': 'draft'}" mode="tree" name="scan_rec_ids" readonly="state == 'done'" widget="section_and_note_one2many">
+                        <tree editable="bottom">
+                            <field name="created_date"/>
+                            <field name="product_id" readonly="state == 'done'" required="True"/>
+                            <field name="quantity" readonly="state == 'done'" required="True"/>
+                            <field name="uom_id"/>
+                            <field name="cost"/>
+                            <field name="total_price"/>
+                            <field name="state"/>
+                        </tree></field>
+                     <group class="oe_subtotal_footer oe_right">
+                        <div class="oe_subtotal_footer_separator oe_inline">
+                            <label for="price"/>
+                        </div>
+                        <field name="price" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary"
+                               options="{'currency_field': 'currency_id'}"/>
+                    </group>
+                </sheet>
+            </form></field>
+    </record>
+    <record id="action_overview" model="ir.actions.act_window">
+        <field name="name">Overview</field>
+        <field name="res_model">scan.overview</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No Scan overviews!
+            </p></field>
+    </record>
+    <menuitem action="action_overview" id="submenu_overview" name="Inventory Checks" parent="qrcode_data" sequence="3"/>
+</odoo>

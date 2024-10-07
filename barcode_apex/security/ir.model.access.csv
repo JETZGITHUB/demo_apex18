@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_scan_data,access.scan.data,model_scan_data,,1,1,1,1
+access_scan_overview,access.scan.overview,model_scan_overview,,1,1,1,1
+access_compare_difference,access.compare.difference,model_compare_difference,,1,1,1,1

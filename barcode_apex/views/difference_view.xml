@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="view_compare_difference_tree" model="ir.ui.view">
+        <field name="name">view_compare_difference_tree</field>
+        <field name="model">compare.difference</field>
+        <field name="arch" type="xml">
+            <tree class="barcode_apex_view_compare_difference_tree"
+            decoration-danger="missing != 0">
+                <field name="product_id"/>
+                <field name="existing_qty"/>
+                <field name="counted_qty"/>
+                <field name="difference"/>
+                <field name="wip_component"/>
+                <field name="wip_product"/>
+                <field name="missing"/>
+            </tree>
+        </field>
+    </record>
+</odoo>
